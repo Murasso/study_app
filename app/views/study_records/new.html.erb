@@ -1,0 +1,90 @@
+   <div class="container">
+    <h2>Pomodoro Timer</h2>
+    <p id="timer">25:00</p>
+    <button type="button" id="startButton" class="btn btn-primary" onclick="startTimer()">Start</button>
+    <button type="button" class="btn btn-danger" onclick="stopTimer()" data-toggle="modal" data-target="#myModal">Stop</button>
+    <p id="studySessions">Study Sessions: 0</p>
+  </div>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          
+          <h4 class="modal-title">Study Session</h4>
+        </div>
+        <div class="modal-body">
+          <% if true %>
+          <%= form_with model: @study_record do |f| %>
+            <div class="form-group">
+              <%= f.label :title %>
+              <%= f.text_field :title, class: 'form-control' %>
+            </div>
+            <div class="form-group">
+              <%= f.label :comment %>
+              <%= f.text_area :comment, class: 'form-control', rows: 5 %>
+            </div>
+            <div class="form-group">
+            <%= f.label :study_hours, id: "study_sessions_label" %>
+            <%= f.number_field :study_hours, id: "study_sessions_field", class: 'form-control' %>
+          </div>
+            <%= f.submit "Submit", class: 'btn btn-primary', data: {dismiss: 'modal'} %>
+          <% end %>
+        <% else %>
+          <p>No study record found.</p>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <script>
+    var interval;
+    var minutes = 25;
+    var seconds = 0;
+    var breakTime = false;
+    var studySessions = 0;
+
+    function startTimer() {
+      document.getElementById('startButton').disabled = true;
+      clearInterval(interval);
+      interval = setInterval(function() {
+        if (seconds == 0) {
+          if (minutes == 0) {
+            clearInterval(interval);
+            if (breakTime) {
+              alert("Break's over, back to work!");
+              breakTime = false;
+              minutes = 25;
+            } else {
+              alert("Time's up! Take a 5-minute break.");
+              breakTime = true;
+              minutes = 5;
+              startTimer();
+              studySessions++;
+          document.getElementById('studySessions').innerText = "Study Sessions: " + studySessions;
+            }
+            seconds = 0;
+          } else {
+            minutes--;
+            seconds = 59;
+          }
+        } else {
+          seconds--;
+        }
+        document.getElementById('timer').innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+      }, 1000);
+     
+    }
+
+    function stopTimer() {
+      document.getElementById('startButton').disabled = false;
+      clearInterval(interval);
+      minutes = 25;
+      seconds = 0;
+      breakTime = false;
+      document.getElementById('timer').innerText = "25:00";
+    }
+  </script>
