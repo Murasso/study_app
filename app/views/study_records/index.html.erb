@@ -1,2 +1,20 @@
-<h1>StudyRecords#index</h1>
-<p>Find me in app/views/study_records/index.html.erb</p>
+<table class='table table-hover table-inverse'>
+    <thead>
+      <tr>
+        <th></th>
+        <th>Title</th>
+        <th>Comment</th>
+        <th>number of session</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @study_records.each do |study_record| %>
+      <tr>
+        <th><p><%=link_to image_tag(study_record.user.get_profile_image(100,100)), user_path(study_record.user.id) %></p></th>
+        <th><p><%= link_to study_record.title, study_record_path(study_record.id)%></p></th>
+        <th><p><%= study_record.body %></p></th>
+        <th><p><%= study_record.num_of_session %></p></th>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>

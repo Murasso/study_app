@@ -1,9 +1,31 @@
    <div class="container">
-    <h2>Pomodoro Timer</h2>
-    <p id="timer">25:00</p>
-    <button type="button" id="startButton" class="btn btn-primary" onclick="startTimer()">Start</button>
-    <button type="button" class="btn btn-danger" onclick="stopTimer()" data-toggle="modal" data-target="#myModal">Stop</button>
-    <p id="studySessions">Study Sessions: 0</p>
+     <div class="row mx-auto" style="margin-top:100px;">
+       <div class="col-md-8 offset-md-4">
+          <div class="card card-block w-50">
+             <h2>Pomodoro Timer</h2>
+              <p id="timer">1:00</p>
+              <button type="button" id="startButton" class="btn btn-primary" onclick="startTimer()">Start</button>
+              <button type="button" class="btn btn-danger" onclick="stopTimer()" data-toggle="modal" data-target="#myModal">Stop</button>
+              <p id="studySessions">Study Sessions: 0</p>
+          </div>
+        
+       </div>
+        
+      </div>
+      
+      <div class="row">
+        
+      </div>
+      <div class="row">
+        
+      </div>
+      <div class="row">
+        
+      </div>
+        
+        
+    
+    
   </div>
 
   <!-- Modal -->
@@ -12,25 +34,25 @@
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
-          
-          <h4 class="modal-title">Study Session</h4>
+
+        <h4 class="modal-title">Study Session</h4>
         </div>
         <div class="modal-body">
           <% if true %>
-          <%= form_with model: @study_record do |f| %>
+          <%= form_with model: StudyRecord.new, method: :post do |f| %>
             <div class="form-group">
               <%= f.label :title %>
-              <%= f.text_field :title, class: 'form-control' %>
+              <%= f.text_field :title, class: 'form-control', value: Date.today %>
             </div>
             <div class="form-group">
               <%= f.label :comment %>
-              <%= f.text_area :comment, class: 'form-control', rows: 5 %>
+              <%= f.text_area :body, class: 'form-control', rows: 5, :placeholder => 'Finished reading 5 pages!'%>
             </div>
             <div class="form-group">
-            <%= f.label :study_hours, id: "study_sessions_label" %>
-            <%= f.number_field :study_hours, id: "study_sessions_field", class: 'form-control' %>
+            <%= f.label :number_of_session %>
+            <%= f.number_field :num_of_session, id: "study_sessions_field", class: 'form-control', min: 0%>
           </div>
-            <%= f.submit "Submit", class: 'btn btn-primary', data: {dismiss: 'modal'} %>
+            <%= f.submit "Submit", class: 'btn btn-primary'%>
           <% end %>
         <% else %>
           <p>No study record found.</p>
@@ -42,7 +64,7 @@
 
  <script>
     var interval;
-    var minutes = 25;
+    var minutes = 1;
     var seconds = 0;
     var breakTime = false;
     var studySessions = 0;
@@ -57,7 +79,7 @@
             if (breakTime) {
               alert("Break's over, back to work!");
               breakTime = false;
-              minutes = 25;
+              minutes = 1;
             } else {
               alert("Time's up! Take a 5-minute break.");
               breakTime = true;
@@ -76,15 +98,15 @@
         }
         document.getElementById('timer').innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
       }, 1000);
-     
+
     }
 
     function stopTimer() {
       document.getElementById('startButton').disabled = false;
       clearInterval(interval);
-      minutes = 25;
+      minutes = 1;
       seconds = 0;
       breakTime = false;
-      document.getElementById('timer').innerText = "25:00";
+      document.getElementById('timer').innerText = "1:00";
     }
   </script>
