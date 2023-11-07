@@ -5,7 +5,7 @@
              <h2>Pomodoro Timer</h2>
               <p id="timer">1:00</p>
               <button type="button" id="startButton" class="btn btn-primary" onclick="startTimer()">Start</button>
-              <button type="button" class="btn btn-danger" onclick="stopTimer()" data-toggle="modal" data-target="#myModal">Stop</button>
+              <button type="button" class="btn btn-danger" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
               <p id="studySessions">Study Sessions: 0</p>
           </div>
         
@@ -27,8 +27,23 @@
     
     
   </div>
-
+  
   <!-- Modal -->
+  <div id="selectModal" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+
+        <h4 class="modal-title">Save study record?</h4>
+        </div>
+        <div class="modal-body">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Save</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Do not save</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="myModal" class="modal fade" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
       <!-- Modal content-->
@@ -61,6 +76,7 @@
       </div>
     </div>
   </div>
+<!-- Required dependencies for the audio to work -->
 
  <script>
     var interval;
@@ -68,7 +84,9 @@
     var seconds = 0;
     var breakTime = false;
     var studySessions = 0;
-
+    function dissmissModal(){
+      myModal.hide()
+    }
     function startTimer() {
       document.getElementById('startButton').disabled = true;
       clearInterval(interval);
@@ -82,7 +100,8 @@
               minutes = 1;
             } else {
               alert("Time's up! Take a 5-minute break.");
-              navigator.vibrate(200);
+              var audio = new Audio('/assets/audios/mixkit-bell-gentle-alarm-notification-940.wav');
+              audio.play();  
               breakTime = true;
               minutes = 5;
               startTimer();
