@@ -38,7 +38,7 @@
         <h4 class="modal-title">Study Session</h4>
         </div>
         <div class="modal-body">
-          <% if true %>
+        <% if true %>
           <%= form_with model: StudyRecord.new, method: :post do |f| %>
             <div class="form-group">
               <%= f.label :title %>
@@ -82,6 +82,7 @@
               minutes = 1;
             } else {
               alert("Time's up! Take a 5-minute break.");
+              navigator.vibrate(200);
               breakTime = true;
               minutes = 5;
               startTimer();
