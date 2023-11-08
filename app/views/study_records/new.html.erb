@@ -2,7 +2,7 @@
      <div class="row mx-auto" style="margin-top:100px;">
        <div class="col-md-8 offset-md-4">
           <div class="card card-block w-50">
-             <h2>Pomodoro Timer</h2>
+             <h2><p id="pomodoro">Pomodoro Timer</p></h2>
               <p id="timer">1:00</p>
               <button type="button" id="startButton" class="btn btn-primary" onclick="startTimer()">Start</button>
               <button type="button" class="btn btn-danger" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
@@ -67,7 +67,9 @@
             <%= f.label :number_of_session %>
             <%= f.number_field :num_of_session, id: "study_sessions_field", class: 'form-control', min: 0%>
           </div>
-            <%= f.submit "Submit", class: 'btn btn-primary'%>
+           
+            <%= audio_tag("ping-contact-cinematic.mp3",id:"audio") %>
+            <%=f.submit "I got it!" ,class:"btn btn-primary"%>
           <% end %>
         <% else %>
           <p>No study record found.</p>
@@ -76,9 +78,9 @@
       </div>
     </div>
   </div>
-<!-- Required dependencies for the audio to work -->
 
  <script>
+    
     var interval;
     var minutes = 1;
     var seconds = 0;
@@ -95,15 +97,16 @@
           if (minutes == 0) {
             clearInterval(interval);
             if (breakTime) {
-              alert("Break's over, back to work!");
+              document.querySelector("#audio").play();
+              document.getElementById("pomodoro").innerText = "Break's over, back to work!"
               breakTime = false;
               minutes = 1;
             } else {
-              alert("Time's up! Take a 5-minute break.");
-              var audio = new Audio('/assets/audios/mixkit-bell-gentle-alarm-notification-940.wav');
-              audio.play();  
+              document.querySelector("#audio").play();
+              document.getElementById("pomodoro").innerText = "Time's up! Take a 5-minute break."
               breakTime = true;
               minutes = 5;
+              
               startTimer();
               studySessions++;
           document.getElementById('studySessions').innerText = "Study Sessions: " + studySessions;
@@ -129,4 +132,5 @@
       breakTime = false;
       document.getElementById('timer').innerText = "1:00";
     }
+ 
   </script>
