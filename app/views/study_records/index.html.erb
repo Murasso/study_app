@@ -1,20 +1,44 @@
-<table class='table table-hover table-inverse'>
-    <thead>
-      <tr>
-        <th></th>
-        <th>Title</th>
-        <th>Comment</th>
-        <th>number of session</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @study_records.each do |study_record| %>
-      <tr>
-        <th><p><%=link_to image_tag(study_record.user.get_profile_image(100,100)), user_path(study_record.user.id) %></p></th>
-        <th><p><%= link_to study_record.title, study_record_path(study_record.id)%></p></th>
-        <th><p><%= study_record.body %></p></th>
-        <th><p><%= study_record.num_of_session %></p></th>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+<style>
+.scrolling-wrapper {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  transition: transform 0.5s;
+  width: 60%;
+  height: 50%;
+  margin: 20px;
+  background-color: white;
+  border: 1px solid black;
+}
+
+.card-body {
+  text-align: center;
+}
+
+.card:hover {
+  transform: scale(1.1);
+  transform-origin: center;
+}
+
+</style>
+<div class="scrolling-wrapper">
+  <% @study_records.each do |study_record| %>
+    <div class="card text-center" style="max-width: 30rem;">
+      <div class="card-body">
+        <%= link_to image_tag(study_record.user.get_profile_image(300,300), class: "media-object", style: "width:60px"), user_path(study_record.user.id) %>
+        <div class="media-body" style="padding-top: 10px;">
+          <h4 class="media-heading"><%= link_to study_record.title, study_record_path(study_record.id)%></h4>
+          <p><%= study_record.body %></p>
+          <p><small><%= study_record.num_of_session %> sessions</small></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+

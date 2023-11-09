@@ -1,1 +1,14 @@
-<h1>study app</h1>
+    <div class="hero text-center">
+        <div class="container">
+            <h1>Welcome to Study Tracker</h1>
+            <p class="lead">Improve your focus and track your study time with our Pomodoro timer.</p>
+        </div>
+    </div>
+    <section>
+        <div class="container">
+            <h2 class="text-center">Start Your Pomodoro Timer</h2>
+            <div class="d-flex justify-content-center">
+                <%= link_to "Start Timer", new_study_record_path, class: "btn btn-secondary btn-lg" %>
+            </div>
+        </div>
+    </section>

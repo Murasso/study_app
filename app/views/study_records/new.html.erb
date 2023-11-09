@@ -1,41 +1,30 @@
-   <div class="container">
-     <div class="row mx-auto" style="margin-top:100px;">
-       <div class="col-md-8 offset-md-4">
-          <div class="card card-block w-50">
-             <h2><p id="pomodoro">Pomodoro Timer</p></h2>
-              <p id="timer">1:00</p>
-              <button type="button" id="startButton" class="btn btn-primary" onclick="startTimer()">Start</button>
-              <button type="button" class="btn btn-danger" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
-              <p id="studySessions">Study Sessions: 0</p>
-          </div>
-
-       </div>
-
+<div class="container">
+  <div class="row justify-content-center align-items-center" style="height:100vh;">
+    <div class="col-8 col-md-6 col-lg-4">
+      <div class="card card-block" style="background-color: white; color: black; border-radius: 25px;">
+        <div class="card-body text-center">
+          <h2><p id="pomodoro">Pomodoro Timer</p></h2>
+          <p id="timer">25:00</p>
+          <button type="button" id="startButton" class="btn" style="background-color: #007bff; color: white;" onclick="startTimer()">Start</button>
+          <button type="button" class="btn" style="background-color: #dc3545; color: white;" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
+          <p id="studySessions">Study Sessions: 0</p>
+        </div>
       </div>
-
-      <div class="row">
-
-      </div>
-      <div class="row">
-
-      </div>
-      <div class="row">
-
-      </div>
-
-
-
-
+    </div>
   </div>
+</div>
+
+
 
   <!-- Modal -->
   <div id="selectModal" class="modal fade" role="dialog" aria-hidden="true">
+  <% if user_signed_in? %>
     <div class="modal-dialog">
       <!-- Modal content-->
       <div class="modal-content">
         <div class="modal-header">
 
-        <h4 class="modal-title">Save study record?</h4>
+        <h4 class="modal-title">Save your study?</h4>
         </div>
         <div class="modal-body">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Save</button>
@@ -43,7 +32,28 @@
         </div>
       </div>
     </div>
+  <%else%>
+  <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+
+        <h4 class="modal-title">
+          Looks like your not signed in...
+        </h4>
+        </div>
+        <div class="modal-body">
+            <%= link_to "Sign in?",new_user_session_path, class: "btn btn-primary btn-lg" %>
+        </div>
+      </div>
+    </div>
+  <div> 
+  
   </div>
+  <%end%>
+  </div>
+  
+
   <div id="myModal" class="modal fade" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
       <!-- Modal content-->
@@ -53,7 +63,7 @@
         <h4 class="modal-title">Study Session</h4>
         </div>
         <div class="modal-body">
-        <% if true %>
+    
           <%= form_with model: StudyRecord.new, method: :post do |f| %>
             <div class="form-group">
               <%= f.label :title %>
@@ -70,9 +80,7 @@
             <%= audio_tag("ping-contact-cinematic.mp3",id:"audio") %>
             <%= f.submit "Share", class: 'btn btn-primary'%>
           <% end %>
-        <% else %>
-          <p>No study record found.</p>
-        <% end %>
+       
         </div>
       </div>
     </div>
@@ -81,13 +89,10 @@
  <script>
 
     var interval;
-    var minutes = 1;
+    var minutes = 25;
     var seconds = 0;
     var breakTime = false;
     var studySessions = 0;
-    function dissmissModal(){
-      myModal.hide()
-    }
     function startTimer() {
       document.getElementById('startButton').disabled = true;
       clearInterval(interval);
@@ -99,7 +104,8 @@
               document.querySelector("#audio").play();
               document.getElementById("pomodoro").innerText = "Break's over, back to work!"
               breakTime = false;
-              minutes = 1;
+              minutes = 25;
+              startTimer();
             } else {
               document.querySelector("#audio").play();
               document.getElementById("pomodoro").innerText = "Time's up! Take a 5-minute break."
@@ -126,10 +132,10 @@
     function stopTimer() {
       document.getElementById('startButton').disabled = false;
       clearInterval(interval);
-      minutes = 1;
+      minutes = 25;
       seconds = 0;
       breakTime = false;
-      document.getElementById('timer').innerText = "1:00";
+      document.getElementById('timer').innerText = "25:00";
     }
 
   </script>
