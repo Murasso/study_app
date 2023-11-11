@@ -52,8 +52,15 @@ footer {
     color:white;
 }
 #pomodoro-row{
-  
-    padding-top:3%;
+  padding-top:3%;
+}
+#data-bg{
+  background-color:#ededed;
+}
+#post-bg{
+  background-color:#ededed;
+  background-size: cover;
+  height:100vh;
 }
 
 /* When the screen size is less than 600px, make the timer text smaller */
