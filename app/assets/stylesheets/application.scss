@@ -49,12 +49,18 @@ footer {
 #studySessions{
     color:white;
 }
+#pomodoro-row{
+    height:100%;
+    padding-top:3%;
+}
+  
 /* When the screen size is less than 600px, make the timer text smaller */
 @media only screen and (max-width: 600px) {
   .timer {
     font-size: 4em;
   }
-  #pomodoro-col{
+  #pomodoro-row{
       
   }
+  
 }
