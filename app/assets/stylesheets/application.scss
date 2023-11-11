@@ -1,0 +1,57 @@
+body {
+    font-family: Arial, sans-serif;
+//   background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
+  
+}
+header{
+   
+}
+.hero {
+    padding: 50px 0;
+    background:#1c1c1c; /* Darker grey background */
+    color: #ffffff; /* Light text */
+}
+.hero h1 {
+    font-size: 2.5em;
+}
+.hero p {
+    font-size: 1.2em;
+}
+section {
+    padding: 50px 0;
+}
+footer {
+    padding-bottom: 10px;
+    height:10px;
+    /*background-color: #a3a3a3;*/
+    /*color: white;*/
+}
+
+.pomodoro-background {
+//   background-color: black; 
+//   color:white;
+    background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
+    color: rgba(0, 0, 0, 0.5);
+    background-size: cover;
+}
+.timer {
+  font-size: 10em;
+}
+#startButton{
+     color: rgba(1, 1, 1, 0.5);
+     font-size:3rem
+}
+/* When the screen size is less than 600px, make the timer text smaller */
+#stopButton{
+     color: rgba(0, 0, 0, 0.5);
+     font-size:3rem
+}
+#studySessions{
+    color:white;
+}
+/* When the screen size is less than 600px, make the timer text smaller */
+@media only screen and (max-width: 600px) {
+  .timer {
+    font-size: 4em;
+  }
+}

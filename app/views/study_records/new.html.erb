@@ -1,12 +1,13 @@
-<div class="container" style="background-color: black; color: white;">
+<div class="container-fluid pomodoro-background" style="">
   <div class="row justify-content-center align-items-center" style="height:100vh;">
     <div class="col-8 col-md-6 col-lg-4 text-center" style="border-radius: 25px;">
       <h2><p id="pomodoro">Pomodoro Timer</p></h2>
+      <button type="button" id="startButton" class="btn" onclick="startTimer()">Start</button>
+      <button type="button" id="stopButton" class="btn" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
+      
       <p id="timer" class="timer">25:00</p>
-      <div class="d-flex flex-column">
-        <button type="button" id="startButton" class="btn btn-warning" onclick="startTimer()">Start</button>
-        <button type="button" class="btn btn-secondary" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
-      </div>
+    
+        
       <p id="studySessions">Study Sessions: 0</p>
     </div>
   </div>
@@ -44,12 +45,12 @@
         </div>
       </div>
     </div>
-  <div> 
-  
+  <div>
+
   </div>
   <%end%>
   </div>
-  
+
 
   <div id="myModal" class="modal fade" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -60,7 +61,7 @@
         <h4 class="modal-title">Study Session</h4>
         </div>
         <div class="modal-body">
-    
+
           <%= form_with model: StudyRecord.new, method: :post do |f| %>
             <div class="form-group">
               <%= f.label :title %>
@@ -75,14 +76,17 @@
             <%= f.number_field :num_of_session, id: "study_sessions_field", class: 'form-control', min: 0%>
           </div>
             <%= audio_tag("ping-contact-cinematic.mp3",id:"audio") %>
+
             <%= f.submit "Share", class: 'btn btn-primary'%>
           <% end %>
-       
         </div>
       </div>
     </div>
+
   </div>
 
+
+<%=audio_tag("lofi5.mp3", autoplay: true, controls: true, loop: true)%>
  <script>
 
     var interval;
@@ -134,5 +138,8 @@
       breakTime = false;
       document.getElementById('timer').innerText = "25:00";
     }
+    audiojs.events.ready(function() {
+      var as = audiojs.createAll();
+    });
 
   </script>
