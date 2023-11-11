@@ -1,10 +1,10 @@
 body {
     font-family: Arial, sans-serif;
 //   background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
-  
+
 }
 header{
-   
+
 }
 .hero {
     padding: 50px 0;
@@ -28,7 +28,7 @@ footer {
 }
 
 .pomodoro-background {
-//   background-color: black; 
+//   background-color: black;
 //   color:white;
     background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
     color: rgba(0, 0, 0, 0.5);
@@ -50,17 +50,26 @@ footer {
     color:white;
 }
 #pomodoro-row{
-    height:100%;
+  
     padding-top:3%;
 }
-  
+
 /* When the screen size is less than 600px, make the timer text smaller */
 @media only screen and (max-width: 600px) {
   .timer {
     font-size: 4em;
   }
   #pomodoro-row{
-      
+
   }
-  
+    #startButton{
+     color: rgba(1, 1, 1, 0.5);
+     font-size:20px
+    }
+    /* When the screen size is less than 600px, make the timer text smaller */
+    #stopButton{
+         color: rgba(0, 0, 0, 0.5);
+         font-size:20px
+    }
+
 }
