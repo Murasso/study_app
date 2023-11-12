@@ -53,12 +53,13 @@
               </div>
           <% end %>
 
-           <div style="background-color:#954fab">
-              <div>
-                <%= f.submit "Log in", class:"btn text-white"  %>
-            </div>
+           <div>
+          
+                <%= f.submit "Log in", class:"btn btn-lg text-white", style:"background-color:#954fab" %>
+          
           </div>
           <% end %>
+          <%= render "devise/shared/links" %>
       </div>
     </div>
   </div>
