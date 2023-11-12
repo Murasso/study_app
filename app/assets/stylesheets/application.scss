@@ -1,14 +1,21 @@
 body {
     font-family: Arial, sans-serif;
+   
 //   background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
 
 }
-header{
+main{
+   
+}
 
+#home-page{
+  background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
+  background-size: cover;
+  background-position: center center;
 }
 .hero {
     padding: 50px 0;
-    background:#1c1c1c; /* Darker grey background */
+    
     color: #ffffff; /* Light text */
 }
 .hero h1 {
@@ -23,16 +30,19 @@ section {
 footer {
     padding-bottom: 10px;
     height:10px;
-    /*background-color: #a3a3a3;*/
-    /*color: white;*/
 }
-
+#welcome{
+  text-shadow: 2px 2px 2px grey;
+}
+#home-page-lower{
+  
+   background-color: rgba(237, 237, 237, 0.7);
+  
+}
 .pomodoro-background {
-//   background-color: black;
-//   color:white;
     background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
-    background-position: center center; 
-    color: rgba(255, 255, 255, 0.5);
+    background-position: center center;
+    color: rgba(255, 255, 255, 0.7);
     background-size: cover;
     height:100vh;
 }
@@ -40,27 +50,38 @@ footer {
   font-size: 10em;
 }
 #startButton{
-     color: rgba(255, 255, 255, 0.8);
-     font-size:3rem
+    text-shadow: 2px 2px 2px grey;
+    color: rgba(255, 255, 255, 0.8);
+    font-size:3rem;
 }
 /* When the screen size is less than 600px, make the timer text smaller */
 #stopButton{
-     color: rgba(255, 255, 255, 0.8);
-     font-size:3rem
+    text-shadow: 2px 2px 2px grey;
+    color: rgba(255, 255, 255, 0.8);
+    font-size:3rem
+}
+/* When the screen size is less than 600px, make the timer text smaller */
+#pauseButton{
+    text-shadow: 2px 2px 2px grey;
+    color: rgba(255, 255, 255, 0.8);
+    font-size:3rem
 }
 #studySessions{
     color:white;
 }
 #pomodoro-row{
   padding-top:3%;
+  width:100%;
 }
-#data-bg{
-  background-color:#ededed;
+
+#pomodoro{
+  text-shadow: 2px 2px 2px grey;
+  color: rgba(255, 255, 255, 0.8);
+
 }
-#post-bg{
-  background-color:#ededed;
-  background-size: cover;
-  height:100vh;
+#start-stop-card{
+  background-color: rgba(255, 255, 255, 0.2);
+  width:100%;
 }
 
 /* When the screen size is less than 600px, make the timer text smaller */
@@ -72,16 +93,20 @@ footer {
 
   }
     #startButton{
-    
+
      font-size:30px
     }
     /* When the screen size is less than 600px, make the timer text smaller */
     #stopButton{
-         
+
+         font-size:30px
+    }
+    #pauseButton{
+
          font-size:30px
     }
     #pomodoro-row{
-  
+
     padding-top:30%;
 }
 

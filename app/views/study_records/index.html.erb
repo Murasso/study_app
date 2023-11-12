@@ -1,13 +1,4 @@
 <style>
-.scrolling-wrapper {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 .card {
   transition: transform 0.5s;
   width: 60%;
@@ -15,6 +6,9 @@
   margin: 20px;
   background-color: white;
   border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card-body {
@@ -26,19 +20,26 @@
   transform-origin: center;
 }
 
+.row {
+  display: flex;
+  justify-content: center;
+}
 </style>
-<div class="scrolling-wrapper" id="post-bg">
-  <% @study_records.each do |study_record| %>
-    <div class="card text-center" style="max-width: 30rem;">
-      <div class="card-body">
-        <%= link_to image_tag(study_record.user.get_profile_image(300,300), class: "media-object", style: "width:60px"), user_path(study_record.user.id) %>
-        <div class="media-body" style="padding-top: 10px;">
-          <h4 class="media-heading"><%= link_to study_record.title, study_record_path(study_record.id)%></h4>
-          <p><%= study_record.body %></p>
-          <p><small><%= study_record.num_of_session %> sessions</small></p>
+
+<div class="container-fluid">
+  <div class="row">
+    <% @study_records.each do |study_record| %>
+      <div class="card text-center" style="max-width: 40rem;">
+        <div class="card-body">
+          <%= link_to image_tag(study_record.user.get_profile_image(300,300), class: "media-object", style: "width:60px"), study_record_path(study_record.user.id) %>
+          <div class="media-body" style="padding-top: 10px;">
+            <h4 class="media-heading"><%= link_to study_record.title, study_record_path(study_record.id)%></h4>
+            <p><%= study_record.body %></p>
+            <p><small><%= study_record.num_of_session %> sessions</small></p>
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>
 

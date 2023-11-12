@@ -1,24 +1,23 @@
-<div class="container-fluid pomodoro-background" style="">
+<div class="container-fluid pomodoro-background justify-content-center align-items-center" style="">
   <div class="row justify-content-center align-items-center" id="pomodoro-row">
-    <div class="col-8 col-md-6 col-lg-4 text-center" id="pomodoro-col" style="border-radius: 25px;">
+    <div class="col-12 col-md-8 col-lg-6 text-center" id="pomodoro-col" style="border-radius: 25px;">
       <h2><p id="pomodoro">Pomodoro Timer</p></h2>
-      <button type="button" id="startButton" class="btn btn" onclick="startTimer()">Start</button>
-      <button type="button" id="stopButton" class="btn btn" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
+      <div class="button-container">
+        <button type="button" id="startButton" class="btn btn" onclick="startTimer()">Start</button>
+        <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
+        <button type="button" id="stopButton" class="btn btn" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
+      </div>
 
       <p id="timer" class="timer">25:00</p>
-
-
       <p id="studySessions">Study Sessions: 0</p>
-
-
     </div>
-
   </div>
-<%=audio_tag("lofi5.mp3", controls: true, loop: true)%>
+  <%= audio_tag("lofi5.mp3", controls: true, loop: true) %>
 </div>
 
+<!-- ... (your modal code) ... -->
 
-  <!-- Modal -->
+
   <div id="selectModal" class="modal fade" role="dialog" aria-hidden="true">
   <% if user_signed_in? %>
     <div class="modal-dialog">
@@ -69,7 +68,7 @@
           <%= form_with model: StudyRecord.new, method: :post do |f| %>
             <div class="form-group">
               <%= f.label :title %>
-              <%= f.text_field :title, class: 'form-control', value: Date.today %>
+              <%= f.text_field :title, class: 'form-control', value: Date.current %>
             </div>
             <div class="form-group">
               <%= f.label :comment %>
@@ -79,7 +78,7 @@
             <%= f.label :number_of_session %>
             <%= f.number_field :num_of_session, id: "study_sessions_field", class: 'form-control', min: 0%>
           </div>
-            <%= audio_tag("ping-contact-cinematic.mp3",id:"audio") %>
+            <%= audio_tag("the-clock-strickes-twelve-o-clock-nature-sounds-7806.mp3",id:"audio") %>
 
             <%= f.submit "Share", class: 'btn btn-primary'%>
           <% end %>
@@ -90,59 +89,68 @@
 
   </div>
 
- <script>
+<!-- ... (your modal code) ... -->
 
-    var interval;
-    var minutes = 25;
-    var seconds = 0;
-    var breakTime = false;
-    var studySessions = 0;
-    function startTimer() {
-      document.getElementById('startButton').disabled = true;
-      clearInterval(interval);
-      interval = setInterval(function() {
-        if (seconds == 0) {
-          if (minutes == 0) {
-            clearInterval(interval);
-            if (breakTime) {
-              document.querySelector("#audio").play();
-              document.getElementById("pomodoro").innerText = "Break's over, back to work!"
-              breakTime = false;
-              minutes = 25;
-              startTimer();
-            } else {
-              document.querySelector("#audio").play();
-              document.getElementById("pomodoro").innerText = "Time's up! Take a 5-minute break."
-              breakTime = true;
-              minutes = 5;
+<script>
+  var interval;
+  var minutes = 25;
+  var seconds = 0;
+  var breakTime = false;
+  var studySessions = 0;
 
-              startTimer();
-              studySessions++;
-          document.getElementById('studySessions').innerText = "Study Sessions: " + studySessions;
-            }
-            seconds = 0;
+  function startTimer() {
+    document.getElementById('startButton').disabled = true;
+    document.getElementById('pauseButton').disabled = false;
+    clearInterval(interval);
+
+    interval = setInterval(function () {
+      if (seconds == 0) {
+        if (minutes == 0) {
+          clearInterval(interval);
+          if (breakTime) {
+            document.querySelector("#audio").play();
+            document.getElementById("pomodoro").innerText = "Break's over, back to work!"
+            breakTime = false;
+            minutes = 25;
+            startTimer();
           } else {
-            minutes--;
-            seconds = 59;
+            document.querySelector("#audio").play();
+            document.getElementById("pomodoro").innerText = "Time's up! Take a 5-minute break."
+            breakTime = true;
+            minutes = 5;
+            startTimer();
+            studySessions++;
+            document.getElementById('studySessions').innerText = "Study Sessions: " + studySessions;
           }
+          seconds = 0;
         } else {
-          seconds--;
+          minutes--;
+          seconds = 59;
         }
-        document.getElementById('timer').innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
-      }, 1000);
+      } else {
+        seconds--;
+      }
+      document.getElementById('timer').innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    }, 1000);
+  }
 
-    }
+  function pauseTimer() {
+    document.getElementById('startButton').disabled = false;
+    document.getElementById('pauseButton').disabled = true;
+    clearInterval(interval);
+  }
 
-    function stopTimer() {
-      document.getElementById('startButton').disabled = false;
-      clearInterval(interval);
-      minutes = 25;
-      seconds = 0;
-      breakTime = false;
-      document.getElementById('timer').innerText = "25:00";
-    }
-    audiojs.events.ready(function() {
-      var as = audiojs.createAll();
-    });
+  function stopTimer() {
+    document.getElementById('startButton').disabled = false;
+    document.getElementById('pauseButton').disabled = true;
+    clearInterval(interval);
+    minutes = 25;
+    seconds = 0;
+    breakTime = false;
+    document.getElementById('timer').innerText = "25:00";
+  }
 
-  </script>
+  audiojs.events.ready(function () {
+    var as = audiojs.createAll();
+  });
+</script>
