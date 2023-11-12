@@ -96,10 +96,11 @@
   var seconds = 0;
   var breakTime = false;
   var studySessions = 0;
-
+  document.getElementById('stopButton').disabled = true;
   function startTimer() {
     document.getElementById('startButton').disabled = true;
     document.getElementById('pauseButton').disabled = false;
+    document.getElementById('stopButton').disabled = false;
     clearInterval(interval);
 
     interval = setInterval(function () {
@@ -136,12 +137,14 @@
   function pauseTimer() {
     document.getElementById('startButton').disabled = false;
     document.getElementById('pauseButton').disabled = true;
+    document.getElementById('stopButton').disabled = false;
     clearInterval(interval);
   }
 
   function stopTimer() {
     document.getElementById('startButton').disabled = false;
-    document.getElementById('pauseButton').disabled = true;
+    document.getElementById('pauseButton').disabled = false;
+    document.getElementById('stopButton').disabled = true;
     clearInterval(interval);
     document.getElementById("study_sessions_field").value = studySessions*30+(25-minutes);
     minutes = 25;
