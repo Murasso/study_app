@@ -75,9 +75,8 @@
               <%= f.text_area :body, class: 'form-control', rows: 5, :placeholder => 'Finished reading 5 pages!'%>
             </div>
             <div class="form-group">
-            <%= f.label :number_of_session %>
-            <%= f.number_field :num_of_session, id: "study_sessions_field", class: 'form-control', min: 0%>
-          </div>
+              <%= f.hidden_field :num_of_session, id: "study_sessions_field", class: 'form-control', min: 0%>
+            </div>
             <%= audio_tag("correct_sound.wav",id:"audio") %>
 
             <%= f.submit "Share", class: 'btn btn-primary'%>
@@ -144,10 +143,12 @@
     document.getElementById('startButton').disabled = false;
     document.getElementById('pauseButton').disabled = true;
     clearInterval(interval);
+    document.getElementById("study_sessions_field").value = studySessions*30+(25-minutes);
     minutes = 25;
     seconds = 0;
     breakTime = false;
     document.getElementById('timer').innerText = "25:00";
+    
   }
 
   audiojs.events.ready(function () {

@@ -35,7 +35,12 @@
           <div class="media-body" style="padding-top: 10px;">
             <h4 class="media-heading"><%= link_to study_record.title, study_record_path(study_record.id)%></h4>
             <p><%= study_record.body %></p>
-            <p><small><%= study_record.num_of_session %> sessions</small></p>
+            <p><small><%if study_record.num_of_session==1%>
+            <%= study_record.num_of_session %> minute
+            <%else%>
+              <%= study_record.num_of_session %> minutes
+            <%end%>
+            </small></p>
           </div>
         </div>
       </div>

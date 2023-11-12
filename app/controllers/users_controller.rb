@@ -6,10 +6,9 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @study_records = @user.study_records
-    @line_chart_data = []
-    @study_records.each do |study_record|
-      @line_chart_data << [study_record.created_at.to_s, study_record.num_of_session]
-    end
+    study_records = @user.study_records
+    @data=study_records.group_by_day(:created_at, last: 7, current: true).sum('study_records.num_of_session')
+   
+  
   end
 end

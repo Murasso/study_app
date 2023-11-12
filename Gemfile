@@ -58,5 +58,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
 gem 'audiojs-rails'
-
+gem 'groupdate'
 gem "turbo-rails", "~> 1.5"

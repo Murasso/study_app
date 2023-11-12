@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 2023_11_06_111023) do
   create_table "study_records", force: :cascade do |t|
     t.string "title"
     t.text "body"
-    t.integer "num_of_session"
+    t.float "num_of_session"
     t.integer "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
