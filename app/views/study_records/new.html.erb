@@ -5,7 +5,7 @@
       <div class="button-container">
         <button type="button" id="startButton" class="btn btn" onclick="startTimer()">Start</button>
         <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
-        <button type="button" id="stopButton" class="btn btn" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
+        <button type="button" id="stopButton" class="btn btn" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop/  Post</button>
       </div>
 
       <p id="timer" class="timer">25:00</p>
@@ -18,7 +18,7 @@
 <!-- ... (your modal code) ... -->
 
 
-  <div id="selectModal" class="modal fade" role="dialog" aria-hidden="true">
+  <div class="modal fade" id="selectModal" role="dialog" aria-hidden="true">
   <% if user_signed_in? %>
     <div class="modal-dialog">
       <!-- Modal content-->
@@ -144,7 +144,7 @@
   function stopTimer() {
     document.getElementById('startButton').disabled = false;
     document.getElementById('pauseButton').disabled = false;
-    document.getElementById('stopButton').disabled = true;
+    
     clearInterval(interval);
     document.getElementById("study_sessions_field").value = studySessions*30+(25-minutes);
     minutes = 25;
