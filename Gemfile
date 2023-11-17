@@ -56,7 +56,11 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem 'devise'
+gem "devise", git: "https://github.com/heartcombo/devise"
 gem 'audiojs-rails'
 gem 'groupdate'
 gem "turbo-rails", "~> 1.5"
+gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
+gem 'dotenv-rails'
+gem 'omniauth-rails_csrf_protection', '~> 1.0'

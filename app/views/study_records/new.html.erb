@@ -5,7 +5,7 @@
       <div class="button-container">
         <button type="button" id="startButton" class="btn btn" onclick="startTimer()">Start</button>
         <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
-        <button type="button" id="stopButton" class="btn btn" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop/  Post</button>
+        <button type="button" id="stopButton" class="btn btn" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
       </div>
 
       <p id="timer" class="timer">25:00</p>
@@ -144,14 +144,14 @@
   function stopTimer() {
     document.getElementById('startButton').disabled = false;
     document.getElementById('pauseButton').disabled = false;
-    
+
     clearInterval(interval);
     document.getElementById("study_sessions_field").value = studySessions*30+(25-minutes);
     minutes = 25;
     seconds = 0;
     breakTime = false;
     document.getElementById('timer').innerText = "25:00";
-    
+
   }
 
   audiojs.events.ready(function () {
