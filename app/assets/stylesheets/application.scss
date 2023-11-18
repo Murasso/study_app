@@ -1,16 +1,13 @@
 body {
     font-family: Arial, sans-serif;
-   
+    background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
+    background-size: cover;
+    background-position: center center;
 //   background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
-
 }
 
 
-#home-page{
-  background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
-  background-size: cover;
-  background-position: center center;
-}
+
 .hero {
     padding: 50px 0;
     
@@ -41,10 +38,10 @@ audio{
   
 }
 .pomodoro-background {
-    background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
-    background-position: center center;
+    // background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
+    // background-position: center center;
     color: rgba(255, 255, 255, 0.7);
-    background-size: cover;
+    // background-size: cover;
     height:100vh;
 }
 .timer {
@@ -84,7 +81,9 @@ audio{
   background-color: rgba(255, 255, 255, 0.2);
   width:100%;
 }
-
+.register-back{
+    background-color:rgba(255, 255, 255, 0.8);
+}
 /* When the screen size is less than 600px, make the timer text smaller */
 @media only screen and (max-width: 600px) {
   .timer {
