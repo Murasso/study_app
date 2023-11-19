@@ -153,14 +153,14 @@
             document.querySelector("#audio").play();
             document.getElementById("pomodoro").innerText = message1
             breakTime = false;
-            minutes = input_minutes;
-            startTimer();
+            minutes = study_minutes;
+            startTimer(study_minutes, break_minutes, message1, message2, key);
           } else {
             document.querySelector("#audio").play();
             document.getElementById("pomodoro").innerText = message2
             breakTime = true;
             minutes = break_minutes;
-            startTimer();
+            startTimer(study_minutes, break_minutes, message1, message2, key);
             studySessions++;
             document.getElementById('studySessions').innerText = "Study Sessions: " + studySessions;
           }
