@@ -14,6 +14,8 @@ class StudyRecordsController < ApplicationController
     redirect_to study_records_path
   end
   def show
+    @user = User.find(params[:id])
+    @study_records=@user.study_records.all
   end
   private
 
