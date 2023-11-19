@@ -1,19 +1,56 @@
 <div class="container-fluid pomodoro-background justify-content-center align-items-center" style="">
   <div class="row justify-content-center align-items-center" id="pomodoro-row">
     <div class="col-12 col-md-8 col-lg-6 text-center" id="pomodoro-col" style="border-radius: 25px;">
-      <h2><p id="pomodoro">Pomodoro Timer</p></h2>
-      <div class="button-container">
-        <button type="button" id="startButton" class="btn btn" onclick="startTimer()">Start</button>
-        <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
-        <button type="button" id="stopButton" class="btn btn" onclick="stopTimer()" data-toggle="modal" data-target="#selectModal">Stop</button>
+      <h1 id="pomodoro">Pomodoro</h1>
+      <nav class="navbar navbar-expand-lg navbar-light text-light">
+        <div class="container-fluid justify-content-center">
+          <div class="nav nav-tabs" id="nav-tab" role="tablist" style="background-color:rgb(255,255,255,0.35); border-radius: 25px;">
+            <a class="nav-item nav-link active" id="nav-pomodoro-tab" data-toggle="tab" href="#nav-pomodoro" role="tab" aria-controls="nav-pomodoro" aria-selected="true" onclick="stopTimer()" style="color: black; border-radius: 25px;">Pomodoro</a>
+            <a class="nav-item nav-link" id="nav-shortbreak-tab" data-toggle="tab" href="#nav-shortbreak" role="tab" aria-controls="nav-shortbreak" aria-selected="false" onclick="stopTimer()" style="color: black; border-radius: 25px;">Short break</a>
+            <a class="nav-item nav-link" id="nav-longbreak-tab" data-toggle="tab" href="#nav-longbreak" role="tab" aria-controls="nav-longbreak" aria-selected="false" onclick="stopTimer()" style="color: black; border-radius: 25px;">Long break</a>
+            <a class="nav-item nav-link" id="nav-settings-tab" data-toggle="tab" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false" onclick="stopTimer()" style="color: grey; border-radius: 25px;"><i class="fa-solid fa-gear"></i></a>
+          </div>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-pomodoro" role="tabpanel" aria-labelledby="nav-pomodoro-tab">
+          <div class="button-container">
+            <button type="button" id="startButton" class="btn btn" onclick="startTimer(25,5,'Break is over, back to work!','Time is up! Take a 5-minute break.',1)">Start</button>
+            <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
+            <button type="button" id="stopButton" class="btn btn" onclick="stopTimer(25,5,1)" data-toggle="modal" data-target="#selectModal">Stop</button>
+          </div>
+          <p id="timer1" class="timer">25:00</p>
+          <p id="studySessions">Study Sessions: 0</p>
+          <%= audio_tag("lofi5.mp3", controls: true, loop: true) %>
+        </div>
+        <div class="tab-pane fade" id="nav-shortbreak" role="tabpanel" aria-labelledby="nav-shortbreak-tab">
+          <div class="button-container">
+            <button type="button" id="startButton" class="btn btn" onclick="startTimer(5,25,'Time is up! Take a 5-minute break.','Break is over, back to work!', 2)">Start</button>
+            <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
+            <button type="button" id="stopButton" class="btn btn" onclick="stopTimer(5,25,2)" data-toggle="modal" data-target="#selectModal">Stop</button>
+          </div>
+          <p id="timer2" class="timer">5:00</p>
+          <p id="studySessions">Study Sessions: 0</p>
+          <%= audio_tag("lofi5.mp3", controls: true, loop: true) %>
+        </div>
+        <div class="tab-pane fade" id="nav-longbreak" role="tabpanel" aria-labelledby="nav-longbreak-tab">
+          <div class="button-container">
+            <button type="button" id="startButton" class="btn btn" onclick="startTimer(15,25,'Time is up! Take a 15-minute break.','Break is over, back to work!',3)">Start</button>
+            <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
+            <button type="button" id="stopButton" class="btn btn" onclick="stopTimer(15,25,3)" data-toggle="modal" data-target="#selectModal">Stop</button>
+          </div>
+          <p id="timer3" class="timer">15:00</p>
+          <p id="studySessions">Study Sessions: 0</p>
+          <%= audio_tag("lofi5.mp3", controls: true, loop: true) %>
+        </div>
+        <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
+
+        </div>
       </div>
 
-      <p id="timer" class="timer">25:00</p>
-      <p id="studySessions">Study Sessions: 0</p>
-      <%= audio_tag("lofi5.mp3", controls: true, loop: true) %>
     </div>
   </div>
-  
+
 </div>
 
 <!-- ... (your modal code) ... -->
@@ -41,7 +78,7 @@
         <div class="modal-header">
 
         <h4 class="modal-title">
-          Looks like your not signed in...
+          Looks like you are not signed in...
         </h4>
         </div>
         <div class="modal-body">
@@ -89,16 +126,20 @@
 
   </div>
 
-<!-- ... (your modal code) ... -->
-
 <script>
   var interval;
-  var minutes = 25;
   var seconds = 0;
+  var minutes;
   var breakTime = false;
   var studySessions = 0;
+  var global_minutes;
   document.getElementById('stopButton').disabled = true;
-  function startTimer() {
+  document.getElementById('pauseButton').disabled = true;
+  function startTimer(study_minutes, break_minutes, message1, message2, key) {
+    if (typeof minutes == "undefined"){
+      minutes = study_minutes;
+    }
+
     document.getElementById('startButton').disabled = true;
     document.getElementById('pauseButton').disabled = false;
     document.getElementById('stopButton').disabled = false;
@@ -110,15 +151,15 @@
           clearInterval(interval);
           if (breakTime) {
             document.querySelector("#audio").play();
-            document.getElementById("pomodoro").innerText = "Break's over, back to work!"
+            document.getElementById("pomodoro").innerText = message1
             breakTime = false;
-            minutes = 25;
+            minutes = input_minutes;
             startTimer();
           } else {
             document.querySelector("#audio").play();
-            document.getElementById("pomodoro").innerText = "Time's up! Take a 5-minute break."
+            document.getElementById("pomodoro").innerText = message2
             breakTime = true;
-            minutes = 5;
+            minutes = break_minutes;
             startTimer();
             studySessions++;
             document.getElementById('studySessions').innerText = "Study Sessions: " + studySessions;
@@ -131,11 +172,10 @@
       } else {
         seconds--;
       }
-      document.getElementById('timer').innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+      document.getElementById("timer"+key).innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
       document.getElementById('title').innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+      global_minutes=minutes
     }, 1000);
-      
-    
   }
 
   function pauseTimer() {
@@ -145,19 +185,18 @@
     clearInterval(interval);
   }
 
-  function stopTimer() {
+  function stopTimer(study_minutes, break_minutes,key) {
     document.getElementById('startButton').disabled = false;
     document.getElementById('pauseButton').disabled = false;
 
     clearInterval(interval);
     document.getElementById("study_sessions_field").value = studySessions*30+(25-minutes);
-    minutes = 25;
+    minutes = study_minutes;
     seconds = 0;
     breakTime = false;
-    document.getElementById('timer').innerText = "25:00";
+    document.getElementById('timer'+key).innerText = study_minutes+":00";
 
   }
-
   audiojs.events.ready(function () {
     var as = audiojs.createAll();
   });
