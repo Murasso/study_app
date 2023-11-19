@@ -3,6 +3,8 @@ body {
     background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
     background-size: cover;
     background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 //   background-image: image-url('desktop-wallpaper-lofi-aesthetic-purple-lofi.jpg');
 }
 
@@ -22,10 +24,7 @@ body {
 section {
     padding: 50px 0;
 }
-footer {
-    padding-bottom: 10px;
-    height:10px;
-}
+
 #welcome{
   text-shadow: 2px 2px 2px grey;
 }
@@ -83,6 +82,10 @@ audio{
 }
 /* When the screen size is less than 600px, make the timer text smaller */
 @media only screen and (max-width: 600px) {
+    
+    body{
+        height:100vh;
+    }
   .timer {
     font-size: 4em;
   }
