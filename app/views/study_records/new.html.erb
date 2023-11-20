@@ -1,7 +1,16 @@
 <div class="container-fluid pomodoro-background justify-content-center align-items-center" style="">
   <div class="row justify-content-center align-items-center" id="pomodoro-row">
     <div class="col-12 col-md-8 col-lg-6 text-center" id="pomodoro-col" style="border-radius: 25px;">
-      <h1 id="pomodoro">Pomodoro</h1>
+      <div class="col">
+        <h1 id="pomodoro">Pomodoro</h1>
+        <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="alarmCheckbox" onclick="toggleAlarm()">
+              <label class="form-check-label" for="alarmCheckbox">
+                <i id="alarmIcon" class="fas fa-bell-slash"></i>
+              </label>
+        </div>
+      </div>
+
       <nav class="navbar navbar-expand-lg navbar-light text-light">
         <div class="container-fluid justify-content-center">
           <div class="nav nav-tabs" id="nav-tab" role="tablist" style="background-color:rgb(255,255,255,0.35); border-radius: 25px;">
@@ -15,61 +24,45 @@
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-pomodoro" role="tabpanel" aria-labelledby="nav-pomodoro-tab">
           <div class="button-container">
-                <button type="button" id="startButton" class="btn btn" onclick="startTimer(25, 5, 'Break is over, back to work!', 'Time is up! Take a 5-minute break.', 1)">Start</button>
+                <button type="button" id="startButton" class="btn btn" onclick="startTimer(25, 5, 'Time is up! Take a 5-minute break.', 1)">Start</button>
                 <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
                 <button type="button" id="stopButton" class="btn btn" onclick="stopTimer(25, 5, 1)" data-toggle="modal" data-target="#selectModal">Stop</button>
-            <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="alarmCheckbox" onclick="toggleAlarm()">
-                  <label class="form-check-label" for="alarmCheckbox">
-                <i id="alarmIcon" class="fas fa-bell-slash"></i>
-              </label>
-            </div>
+
           </div>
           <p id="timer1" class="timer">25:00</p>
-          <p id="studySessions">Study Sessions: 0</p>
-          <%= audio_tag("lofi5.mp3", controls: true, loop: true) %>
+
         </div>
         <div class="tab-pane fade" id="nav-shortbreak" role="tabpanel" aria-labelledby="nav-shortbreak-tab">
           <div class="button-container">
-            <button type="button" id="startButton" class="btn btn" onclick="startTimer(5,25,'Time is up! Take a 5-minute break.','Break is over, back to work!', 2)">Start</button>
+            <button type="button" id="startButton" class="btn btn" onclick="startTimer(5,25, 'Break is over, back to work!', 2)">Start</button>
             <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
             <button type="button" id="stopButton" class="btn btn" onclick="stopTimer(5,25,2)" data-toggle="modal" data-target="#selectModal">Stop</button>
-          
-            <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="alarmCheckbox" onclick="toggleAlarm()">
-                  <label class="form-check-label" for="alarmCheckbox">
-                    <i id="alarmIcon" class="fas fa-bell-slash"></i>
-                  </label>
-            </div>
-          
-          
+
+
+
+
           </div>
           <p id="timer2" class="timer">5:00</p>
-          <p id="studySessions">Study Sessions: 0</p>
-          <%= audio_tag("lofi5.mp3", controls: true, loop: true) %>
+ 
         </div>
         <div class="tab-pane fade" id="nav-longbreak" role="tabpanel" aria-labelledby="nav-longbreak-tab">
           <div class="button-container">
-            <button type="button" id="startButton" class="btn btn" onclick="startTimer(15,25,'Time is up! Take a 15-minute break.','Break is over, back to work!',3)">Start</button>
+            <button type="button" id="startButton" class="btn btn" onclick="startTimer(15,25,'Break is over, back to work!',3)">Start</button>
             <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
             <button type="button" id="stopButton" class="btn btn" onclick="stopTimer(15,25,3)" data-toggle="modal" data-target="#selectModal">Stop</button>
-          
-            <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="checkbox" id="alarmCheckbox" onclick="toggleAlarm()">
-                  <label class="form-check-label" for="alarmCheckbox">
-                    <i id="alarmIcon" class="fas fa-bell-slash"></i>
-                  </label>
-            </div>
-          
-          
+
+
+
+
           </div>
           <p id="timer3" class="timer">15:00</p>
-          <p id="studySessions">Study Sessions: 0</p>
-          <%= audio_tag("lofi5.mp3", controls: true, loop: true) %>
+ 
         </div>
         <!--<div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">-->
         <!--    Sorry. This feature is not available yet-->
         <!--</div>-->
+          <p id="studySessions">Study Sessions: 0</p>
+          <%= audio_tag("lofi5.mp3", controls: true, loop: true) %>
       </div>
 
     </div>
@@ -150,13 +143,12 @@
 
   </div>
 
-
 <script>
   var interval;
   var seconds = 0;
   var minutes;
   var breakTime = false;
-  var studySessions = localStorage.getItem('studySessions') || 0; // Retrieve study sessions count from local storage
+  var studySessions =  0; // Retrieve study sessions count from local storage
   var global_minutes;
   var alarmOn = false; // Set this to true if you want to enable the alarm
   var timerStarted = false; // Variable to track if the timer has started
@@ -168,21 +160,20 @@
   // Initial alarm icon state
   updateAlarmIcon();
 
-  function switchTab(tabName) {
-    if (timerStarted && window.confirm("Are you sure you want to switch to " + tabName + "?")) {
+  function switchTab(key) {
+    if (Number(key)==1) {
       // Set default clock value
       document.getElementById("timer1").innerText = "25:00";
       document.getElementById("timer2").innerText = "5:00";
       document.getElementById("timer3").innerText = "15:00";
-
-      $('.nav-tabs a[href="#nav-' + tabName + '"]').tab('show');
+      $('.nav-tabs a[href="#nav-shortbreak"]').tab('show');
       timerStarted = false; // Reset timerStarted to false after switching tabs
     } else {
       // Switch tabs without asking if the timer hasn't started
       document.getElementById("timer1").innerText = "25:00";
       document.getElementById("timer2").innerText = "5:00";
       document.getElementById("timer3").innerText = "15:00";
-      $('.nav-tabs a[href="#nav-' + tabName + '"]').tab('show');
+      $('.nav-tabs a[href="#nav-pomodoro"]').tab('show');
     }
   }
 
@@ -211,7 +202,7 @@
     updateAlarmIcon();
   }
 
-  function startTimer(studyMinutes, breakMinutes, message1, message2, key) {
+  function startTimer(studyMinutes, breakMinutes, message, key) {
     minutes = (typeof minutes === "undefined") ? studyMinutes : minutes;
     updateButtonState(true, false, false);
     clearInterval(interval);
@@ -223,22 +214,21 @@
           clearInterval(interval);
           if (alarmOn) {
             document.querySelector("#audio").play();
+          } else{
+            alert(message)
           }
+            document.getElementById("pomodoro").innerText = message;
 
-          if (breakTime) {
-            document.getElementById("pomodoro").innerText = message1;
-            breakTime = false;
+            studySessions=(Number(key)==1)?studySessions+1:studySessions;
+            console.log(Number(key));
             minutes = studyMinutes;
-            switchTab('pomodoro');
-          } else {
-            document.getElementById("pomodoro").innerText = message2;
-            breakTime = true;
-            minutes = breakMinutes;
-            switchTab('shortbreak');
-            studySessions++;
+            switchTab(key);
+            
+            localStorage.setItem('studySessions', studySessions);
+            timerStarted = false; //
             updateStudySessionsDisplay();
-            localStorage.setItem('studySessions', studySessions); // Store study sessions count in local storage
-          }
+            // Store study sessions count in local storage
+
 
           seconds = 0;
         } else {
@@ -250,6 +240,7 @@
       }
 
       updateTimerDisplay(key);
+      
       global_minutes = minutes;
     }, 1000);
   }

@@ -11,7 +11,7 @@ class StudyRecordsController < ApplicationController
     @study_record = StudyRecord.new(study_record_params)
     @study_record.user_id = current_user.id
     @study_record.save
-    redirect_to study_records_path
+    redirect_to study_record_path(current_user.id)
   end
   def show
     @user = User.find(params[:id])
