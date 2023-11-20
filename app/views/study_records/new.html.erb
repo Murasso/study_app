@@ -15,9 +15,15 @@
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-pomodoro" role="tabpanel" aria-labelledby="nav-pomodoro-tab">
           <div class="button-container">
-            <button type="button" id="startButton" class="btn btn" onclick="startTimer(25,5,'Break is over, back to work!','Time is up! Take a 5-minute break.',1)">Start</button>
-            <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
-            <button type="button" id="stopButton" class="btn btn" onclick="stopTimer(25,5,1)" data-toggle="modal" data-target="#selectModal">Stop</button>
+                <button type="button" id="startButton" class="btn btn" onclick="startTimer(25, 5, 'Break is over, back to work!', 'Time is up! Take a 5-minute break.', 1)">Start</button>
+                <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
+                <button type="button" id="stopButton" class="btn btn" onclick="stopTimer(25, 5, 1)" data-toggle="modal" data-target="#selectModal">Stop</button>
+            <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="alarmCheckbox" onclick="toggleAlarm()">
+                  <label class="form-check-label" for="alarmCheckbox">
+                <i id="alarmIcon" class="fas fa-bell-slash"></i>
+              </label>
+            </div>
           </div>
           <p id="timer1" class="timer">25:00</p>
           <p id="studySessions">Study Sessions: 0</p>
@@ -28,6 +34,15 @@
             <button type="button" id="startButton" class="btn btn" onclick="startTimer(5,25,'Time is up! Take a 5-minute break.','Break is over, back to work!', 2)">Start</button>
             <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
             <button type="button" id="stopButton" class="btn btn" onclick="stopTimer(5,25,2)" data-toggle="modal" data-target="#selectModal">Stop</button>
+          
+            <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="alarmCheckbox" onclick="toggleAlarm()">
+                  <label class="form-check-label" for="alarmCheckbox">
+                    <i id="alarmIcon" class="fas fa-bell-slash"></i>
+                  </label>
+            </div>
+          
+          
           </div>
           <p id="timer2" class="timer">5:00</p>
           <p id="studySessions">Study Sessions: 0</p>
@@ -38,14 +53,23 @@
             <button type="button" id="startButton" class="btn btn" onclick="startTimer(15,25,'Time is up! Take a 15-minute break.','Break is over, back to work!',3)">Start</button>
             <button type="button" id="pauseButton" class="btn btn" onclick="pauseTimer()">Pause</button>
             <button type="button" id="stopButton" class="btn btn" onclick="stopTimer(15,25,3)" data-toggle="modal" data-target="#selectModal">Stop</button>
+          
+            <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="checkbox" id="alarmCheckbox" onclick="toggleAlarm()">
+                  <label class="form-check-label" for="alarmCheckbox">
+                    <i id="alarmIcon" class="fas fa-bell-slash"></i>
+                  </label>
+            </div>
+          
+          
           </div>
           <p id="timer3" class="timer">15:00</p>
           <p id="studySessions">Study Sessions: 0</p>
           <%= audio_tag("lofi5.mp3", controls: true, loop: true) %>
         </div>
-        <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
-            Sorry. This feature is not available yet
-        </div>
+        <!--<div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">-->
+        <!--    Sorry. This feature is not available yet-->
+        <!--</div>-->
       </div>
 
     </div>
@@ -128,107 +152,134 @@
 
 
 <script>
-var interval;
-var seconds = 0;
-var minutes;
-var breakTime = false;
-var studySessions = localStorage.getItem('studySessions') || 0; // Retrieve study sessions count from local storage
-var global_minutes;
+  var interval;
+  var seconds = 0;
+  var minutes;
+  var breakTime = false;
+  var studySessions = localStorage.getItem('studySessions') || 0; // Retrieve study sessions count from local storage
+  var global_minutes;
+  var alarmOn = false; // Set this to true if you want to enable the alarm
+  var timerStarted = false; // Variable to track if the timer has started
 
-// Initial button states
-document.getElementById('stopButton').disabled = true;
-document.getElementById('pauseButton').disabled = true;
+  // Initial button states
+  document.getElementById('stopButton').disabled = true;
+  document.getElementById('pauseButton').disabled = true;
 
-function switchTab(tabName) {
-  if (window.confirm("Are you sure you want to switch to " + tabName + "?")) {
-    // Set default clock value
-    document.getElementById("timer1").innerText = "25:00";
-    document.getElementById("timer2").innerText = "5:00";
-    document.getElementById("timer3").innerText = "15:00";
+  // Initial alarm icon state
+  updateAlarmIcon();
 
-    $('.nav-tabs a[href="#nav-' + tabName + '"]').tab('show');
-  }
-}
+  function switchTab(tabName) {
+    if (timerStarted && window.confirm("Are you sure you want to switch to " + tabName + "?")) {
+      // Set default clock value
+      document.getElementById("timer1").innerText = "25:00";
+      document.getElementById("timer2").innerText = "5:00";
+      document.getElementById("timer3").innerText = "15:00";
 
-function updateButtonState(start, pause, stop) {
-  document.getElementById('startButton').disabled = start;
-  document.getElementById('pauseButton').disabled = pause;
-  document.getElementById('stopButton').disabled = stop;
-}
-
-function updateTimerDisplay(key) {
-  document.getElementById("timer" + key).innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
-  document.getElementById('title').innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
-}
-
-function updateStudySessionsDisplay() {
-  document.getElementById('studySessions').innerText = "Study Sessions: " + studySessions;
-}
-
-function startTimer(studyMinutes, breakMinutes, message1, message2, key) {
-  minutes = (typeof minutes === "undefined") ? studyMinutes : minutes;
-  updateButtonState(true, false, false);
-  clearInterval(interval);
-
-  interval = setInterval(function () {
-    if (seconds === 0) {
-      if (minutes === 0) {
-        clearInterval(interval);
-        document.querySelector("#audio").play();
-
-        if (breakTime) {
-          document.getElementById("pomodoro").innerText = message1;
-          breakTime = false;
-          minutes = studyMinutes;
-          switchTab('pomodoro');
-        } else {
-          document.getElementById("pomodoro").innerText = message2;
-          breakTime = true;
-          minutes = breakMinutes;
-          switchTab('shortbreak');
-          studySessions++;
-          updateStudySessionsDisplay();
-          localStorage.setItem('studySessions', studySessions); // Store study sessions count in local storage
-        }
-
-        seconds = 0;
-      } else {
-        minutes--;
-        seconds = 59;
-      }
+      $('.nav-tabs a[href="#nav-' + tabName + '"]').tab('show');
+      timerStarted = false; // Reset timerStarted to false after switching tabs
     } else {
-      seconds--;
+      // Switch tabs without asking if the timer hasn't started
+      document.getElementById("timer1").innerText = "25:00";
+      document.getElementById("timer2").innerText = "5:00";
+      document.getElementById("timer3").innerText = "15:00";
+      $('.nav-tabs a[href="#nav-' + tabName + '"]').tab('show');
     }
-
-    updateTimerDisplay(key);
-    global_minutes = minutes;
-  }, 1000);
-}
-
-function pauseTimer() {
-  updateButtonState(false, true, false);
-  clearInterval(interval);
-}
-
-function stopTimer(studyMinutes, breakMinutes, key) {
-  if (interval && window.confirm("Are you sure you want to stop the timer?")) {
-    updateButtonState(false, false, false);
-    clearInterval(interval);
-    document.getElementById("study_sessions_field").value = studySessions * 30 + (25 - minutes);
-    minutes = studyMinutes;
-    seconds = 0;
-    breakTime = false;
-    // updateTimerDisplay(key);
-    
-    updateStudySessionsDisplay();
-    localStorage.setItem('studySessions', studySessions); // Store study sessions count in local storage
-    document.getElementById("timer1").innerText = "25:00";
-    document.getElementById("timer2").innerText = "5:00";
-    document.getElementById("timer3").innerText = "15:00";
   }
-}
 
-audiojs.events.ready(function () {
-  var as = audiojs.createAll();
-});
+  function updateButtonState(start, pause, stop) {
+    document.getElementById('startButton').disabled = start;
+    document.getElementById('pauseButton').disabled = pause;
+    document.getElementById('stopButton').disabled = stop;
+  }
+
+  function updateTimerDisplay(key) {
+    document.getElementById("timer" + key).innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+    document.getElementById('title').innerText = minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+  }
+
+  function updateStudySessionsDisplay() {
+    document.getElementById('studySessions').innerText = "Study Sessions: " + studySessions;
+  }
+
+  function updateAlarmIcon() {
+    var icon = document.getElementById('alarmIcon');
+    icon.className = alarmOn ? 'fas fa-bell' : 'fas fa-bell-slash';
+  }
+
+  function toggleAlarm() {
+    alarmOn = !alarmOn;
+    updateAlarmIcon();
+  }
+
+  function startTimer(studyMinutes, breakMinutes, message1, message2, key) {
+    minutes = (typeof minutes === "undefined") ? studyMinutes : minutes;
+    updateButtonState(true, false, false);
+    clearInterval(interval);
+    timerStarted = true; // Set timerStarted to true
+
+    interval = setInterval(function () {
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(interval);
+          if (alarmOn) {
+            document.querySelector("#audio").play();
+          }
+
+          if (breakTime) {
+            document.getElementById("pomodoro").innerText = message1;
+            breakTime = false;
+            minutes = studyMinutes;
+            switchTab('pomodoro');
+          } else {
+            document.getElementById("pomodoro").innerText = message2;
+            breakTime = true;
+            minutes = breakMinutes;
+            switchTab('shortbreak');
+            studySessions++;
+            updateStudySessionsDisplay();
+            localStorage.setItem('studySessions', studySessions); // Store study sessions count in local storage
+          }
+
+          seconds = 0;
+        } else {
+          minutes--;
+          seconds = 59;
+        }
+      } else {
+        seconds--;
+      }
+
+      updateTimerDisplay(key);
+      global_minutes = minutes;
+    }, 1000);
+  }
+
+  function pauseTimer() {
+    updateButtonState(false, true, false);
+    clearInterval(interval);
+  }
+
+  function stopTimer(studyMinutes, breakMinutes, key) {
+    if (timerStarted && window.confirm("Are you sure you want to stop the timer?")) {
+      updateButtonState(false, false, false);
+      clearInterval(interval);
+      timerStarted = false; // Reset timerStarted to false
+      document.getElementById("study_sessions_field").value = studySessions * 30 + (25 - minutes);
+      minutes = studyMinutes;
+      seconds = 0;
+      breakTime = false;
+      timerStarted = false;
+      // updateTimerDisplay(key);
+
+      updateStudySessionsDisplay();
+      localStorage.setItem('studySessions', studySessions); // Store study sessions count in local storage
+      document.getElementById("timer1").innerText = "25:00";
+      document.getElementById("timer2").innerText = "5:00";
+      document.getElementById("timer3").innerText = "15:00";
+    }
+  }
+
+  audiojs.events.ready(function () {
+    var as = audiojs.createAll();
+  });
 </script>
