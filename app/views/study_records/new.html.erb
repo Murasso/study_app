@@ -227,12 +227,12 @@
             switchTab(key);
 
             localStorage.setItem('studySessions', studySessions);
-            timerStarted = false; //
+            
             updateStudySessionsDisplay();
+            timerStarted = false; 
             // Store study sessions count in local storage
 
-
-          seconds = 0;
+            seconds = 0;
         } else {
           minutes--;
           seconds = 59;
@@ -253,7 +253,6 @@
   }
 
   function stopTimer(studyMinutes, breakMinutes, key) {
-    if (timerStarted && window.confirm("Are you sure you want to stop the timer?")) {
       updateButtonState(false, false, false);
       clearInterval(interval);
       timerStarted = false; // Reset timerStarted to false
@@ -269,7 +268,7 @@
       document.getElementById("timer1").innerText = "25:00";
       document.getElementById("timer2").innerText = "5:00";
       document.getElementById("timer3").innerText = "15:00";
-    }
+   
   }
 
   audiojs.events.ready(function () {
